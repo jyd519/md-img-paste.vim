@@ -1,4 +1,4 @@
-function! SafeMakeDir()
+ function! SafeMakeDir()
     let outdir = expand('%:p:h') . '/' . g:mdip_imgdir
         if !isdirectory(outdir)
             call mkdir(outdir)
@@ -48,7 +48,8 @@ function! SaveNewFile(imgdir, tmpfile)
     let extension = split(a:tmpfile, '\.')[-1]
     let reldir = g:mdip_imgdir
     let cnt = 0
-    let filename = a:imgdir . '/' . g:mdip_imgname . cnt . '.' . extension
+    let outdir = expand('%:p:h') 
+    let filename = outdir . '/'. a:imgdir . '/' . g:mdip_imgname . cnt . '.' . extension
     let relpath = reldir . '/' . g:mdip_imgname . cnt . '.' . extension
     while filereadable(filename)
         call system('diff ' . a:tmpfile . ' ' . filename)
@@ -57,7 +58,7 @@ function! SaveNewFile(imgdir, tmpfile)
             return relpath
         endif
         let cnt += 1
-        let filename = a:imgdir . '/' . g:mdip_imgname . cnt . '.' . extension
+        let filename = outdir . '/' . a:imgdir . '/' . g:mdip_imgname . cnt . '.' . extension
         let relpath = reldir . '/' . g:mdip_imgname . cnt . '.' . extension
     endwhile
     if filereadable(a:tmpfile)
